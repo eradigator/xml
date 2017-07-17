@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bankDatabase xmlns:xsi="http://epam.kz.javalab22.bank"
+              xsi:noNamespaceSchemaLocation="bank.xsd">
+
+    <bankAccount type="Credit">
+        <bankAccountID>812084192841284</bankAccountID>
+        <customerID>851126350040</customerID>
+        <amount>500.8</amount>
+        <bankAccountStatus>ACTIVE</bankAccountStatus>
+    </bankAccount>
+
+
+
+</bankDatabase>
