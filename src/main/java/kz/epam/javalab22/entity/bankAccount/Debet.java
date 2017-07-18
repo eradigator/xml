@@ -13,7 +13,6 @@ public class Debet extends BankAccount {
 
     @Override
     public String getType() {
-
         return BankAccountType.DEBET.toString();
     }
 
