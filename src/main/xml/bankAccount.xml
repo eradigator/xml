@@ -4,10 +4,29 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://kz.epam.javalab22/bank">
 
-    <bankAccount type="Debet">
-        <bankAccountID>812084192841284</bankAccountID>
-        <customerID>851126350040</customerID>
-        <amount>500.8</amount>
+    <bankAccount>
+        <bank:Debit status="PAUSED">
+            <bankAccountID>12341</bankAccountID>
+            <customerID>3153</customerID>
+            <amount>315135135</amount>
+        </bank:Debit>
+    </bankAccount>
+
+    <bankAccount>
+        <bank:Credit status="ACTIVE">
+            <bankAccountID>987341</bankAccountID>
+            <customerID>12412421</customerID>
+            <amount>3153153</amount>
+            <limit>13535</limit>
+        </bank:Credit>
+    </bankAccount>
+
+    <bankAccount>
+        <bank:Debit status="CLOSED">
+            <bankAccountID>88812424</bankAccountID>
+            <customerID>12424124</customerID>
+            <amount>353535</amount>
+        </bank:Debit>
     </bankAccount>
 
 </bank:bankDatabase>
