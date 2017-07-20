@@ -1,46 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="http://www.example.com/students"
-           xmlns:bank="http://www.example.com/students">
+           targetNamespace="http://kz.epam.javalab22/bank"
+           xmlns:bank="http://kz.epam.javalab22/bank">
+
+    <xs:element name="bankDatabase">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bankAccount" type="BankAccount" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
 
     <xs:complexType name="BankAccount">
-        <xs:sequence>
-            <xs:element type="xs:int" name="bankAccountID"/>
-            <xs:element type="xs:long" name="customerID"/>
-            <xs:element type="xs:double" name="amount"/>
-        </xs:sequence>
+
     </xs:complexType>
 
-    <xs:complexType name="Credit">
+
+    <xs:element name="bank">
+        <xs:complexType>
+            <xs:complexType name="BankAccount">
+                <xs:sequence>
+                    <xs:element type="xs:int" name="bankAccountID"/>
+                    <xs:element type="xs:long" name="customerID"/>
+                    <xs:element type="xs:double" name="amount"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:complexType>
+    </xs:element>
+
+    <!--<xs:complexType name="Credit">
         <xs:complexContent>
             <xs:extension base="BankAccount">
                 <xs:all>
-                    <xs:element name="limit" type="xs:string" />
+                    <xs:element name="limit" type="xs:string"/>
                 </xs:all>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>
+    </xs:complexType>-->
 
 
     <!-- BankAccountStatus enum -->
     <xs:attribute name="BankAccountStatus">
         <xs:simpleType>
             <xs:restriction base="xs:string">
-                <xs:enumeration value="ACTIVE" />
-                <xs:enumeration value="CLOSED" />
-                <xs:enumeration value="PAUSED" />
+                <xs:enumeration value="ACTIVE"/>
+                <xs:enumeration value="CLOSED"/>
+                <xs:enumeration value="PAUSED"/>
             </xs:restriction>
         </xs:simpleType>
     </xs:attribute>
 
     <!-- BankAccountType enum -->
-    <xs:attribute name="BankAccountType">
+    <xs:attribute name="bankAccountType">
         <xs:simpleType>
             <xs:restriction base="xs:string">
-                <xs:enumeration value="CREDIT" />
-                <xs:enumeration value="DEBET" />
+                <xs:enumeration value="CREDIT"/>
+                <xs:enumeration value="DEBET"/>
             </xs:restriction>
         </xs:simpleType>
     </xs:attribute>

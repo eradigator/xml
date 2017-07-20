@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bank:bankDatabase xmlns:bank="http://kz.epam.javalab22/bank"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://kz.epam.javalab22/bank">
+
+    <bankAccount type="Debet">
+        <bankAccountID>812084192841284</bankAccountID>
+        <customerID>851126350040</customerID>
+        <amount>500.8</amount>
+    </bankAccount>
+
+</bank:bankDatabase>
