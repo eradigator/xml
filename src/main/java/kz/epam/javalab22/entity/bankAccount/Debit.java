@@ -3,8 +3,9 @@ package kz.epam.javalab22.entity.bankAccount;
 /**
  * Created by erad on 18.06.2017.
  */
-public class Debet extends BankAccount {
-    public Debet(int bankAccountID,
+public class Debit extends BankAccount {
+
+    public Debit(int bankAccountID,
                  long customerID,
                  double amount,
                  BankAccountStatus status) {
@@ -13,7 +14,7 @@ public class Debet extends BankAccount {
 
     @Override
     public String getType() {
-        return BankAccountType.DEBET.toString();
+        return BankAccountType.DEBIT.toString();
     }
 
     @Override
