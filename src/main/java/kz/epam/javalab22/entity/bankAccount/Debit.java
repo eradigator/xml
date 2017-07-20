@@ -5,6 +5,10 @@ package kz.epam.javalab22.entity.bankAccount;
  */
 public class Debit extends BankAccount {
 
+    private BankAccountType bankAccountType = BankAccountType.DEBIT;
+    public Debit() {
+    }
+
     public Debit(int bankAccountID,
                  long customerID,
                  double amount,
@@ -14,7 +18,7 @@ public class Debit extends BankAccount {
 
     @Override
     public String getType() {
-        return BankAccountType.DEBIT.toString();
+        return bankAccountType.toString();
     }
 
     @Override
