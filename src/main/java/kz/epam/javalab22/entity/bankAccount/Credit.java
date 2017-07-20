@@ -5,7 +5,11 @@ package kz.epam.javalab22.entity.bankAccount;
  */
 public class Credit extends BankAccount {
 
+    private BankAccountType bankAccountType = BankAccountType.CREDIT;
     private double limit;
+
+    public Credit() {
+    }
 
     public Credit(int bankAccountID, long customerID, double amount, BankAccountStatus status, double limit) {
         super(bankAccountID, customerID, amount, status);
@@ -14,7 +18,7 @@ public class Credit extends BankAccount {
 
     @Override
     public String getType() {
-        return BankAccountType.CREDIT.toString();
+        return bankAccountType.toString();
     }
 
     @Override

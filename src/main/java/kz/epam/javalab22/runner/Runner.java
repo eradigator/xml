@@ -1,5 +1,6 @@
 package kz.epam.javalab22.runner;
 
+import kz.epam.javalab22.entity.database.BankDatabase;
 import kz.epam.javalab22.parser.SAXParser;
 import org.xml.sax.SAXException;
 
@@ -23,6 +24,11 @@ public class Runner
 
         SAXParser handler = new SAXParser();
         sp.parse(new File("src/main/xml/bankAccount.xml"), handler);
+
+
+        System.out.println();
+
+
 
     }
 }

@@ -1,20 +1,25 @@
 package kz.epam.javalab22.parser;
 
+import kz.epam.javalab22.entity.bankAccount.BankAccount;
+import kz.epam.javalab22.entity.bankAccount.Credit;
+import kz.epam.javalab22.entity.database.BankDatabase;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class SAXParser extends DefaultHandler{
+public class SAXParser extends DefaultHandler {
 
     private boolean isBankAccount = false;
     private boolean isBankAccountID = false;
     private boolean isCustomerID = false;
     private boolean isAmount = false;
-        private boolean isLimit = false;
+    private boolean isLimit = false;
     private boolean isDebit = false;
-    private String status;
+    private boolean isCredit = false;
 
+    private int bankAccountID;
 
+    BankDatabase database = new BankDatabase();
 
 
     @Override
@@ -24,12 +29,15 @@ public class SAXParser extends DefaultHandler{
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        //System.out.println("Start element: " + qName);
 
-        //String attrType = attributes.getQName(0);
-        //String attrValue = attributes.getValue(0);
-        //System.out.println("Type: " + attrType + " Value: " + attrValue);
-        status = attributes.getValue(0);
+        int length = attributes.getLength();
+        for (int i = 0; i < length; i++) {
+            String attrType = attributes.getQName(i);
+            String attrValue = attributes.getValue(i);
+            if (attrType.equalsIgnoreCase("status")) {
+                System.out.println("status: " + attrValue);
+            }
+        }
 
         if (qName.equalsIgnoreCase("bankAccount")) {
             isBankAccount = true;
@@ -37,6 +45,10 @@ public class SAXParser extends DefaultHandler{
 
         if (qName.equalsIgnoreCase("bank:Debit")) {
             isDebit = true;
+        }
+
+        if (qName.equalsIgnoreCase("bank:Credit")) {
+            isCredit = true;
         }
 
         if (qName.equalsIgnoreCase("bankAccountID")) {
@@ -52,10 +64,8 @@ public class SAXParser extends DefaultHandler{
         }
 
         if (qName.equalsIgnoreCase("limit")) {
-            isLimit= true;
+            isLimit = true;
         }
-
-
     }
 
     @Override
@@ -63,18 +73,23 @@ public class SAXParser extends DefaultHandler{
 
         if (isBankAccount) {
             System.out.println("Found New Bank Account");
-            System.out.println("Status:" + status);
             isBankAccount = false;
         }
 
         if (isDebit) {
-            System.out.println("Type: Debit ");
+            System.out.println("Type: DEBIT ");
             isDebit = false;
+        }
+
+        if (isCredit) {
+            System.out.println("Type: CREDIT");
+            isCredit = false;
         }
 
         if (isBankAccountID) {
             System.out.println("BankAccountID: " + new String(ch, start, length));
             isBankAccountID = false;
+            bankAccountID = Integer.parseInt(new String(ch,start,length));
         }
 
         if (isCustomerID) {
@@ -95,8 +110,19 @@ public class SAXParser extends DefaultHandler{
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        //super.endElement(uri, localName, qName);
-        //System.out.println("End element: " + qName);
+
+        if (qName.equalsIgnoreCase("bank:Credit")) {
+            System.out.println("Тут надо создать объект Credit");
+            System.out.println("Сохраненный в переменную bankAccountID: " + bankAccountID);
+
+            database.getDatabase().add(new Credit());
+        }
+
+        if (qName.equalsIgnoreCase("bank:Debit")) {
+            System.out.println("Тут надо создать объект Debit");
+            System.out.println("Сохраненный в переменную bankAccountID: " + bankAccountID);
+        }
+
         if (qName.equalsIgnoreCase("bankAccount")) {
             System.out.println("___________________________________________________________________");
         }
@@ -105,5 +131,10 @@ public class SAXParser extends DefaultHandler{
     @Override
     public void endDocument() throws SAXException {
         System.out.println("Ended");
+
+        for (BankAccount ba : database.getDatabase()) {
+            System.out.println(ba);
+        }
+
     }
 }
