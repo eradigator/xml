@@ -6,8 +6,6 @@ package kz.epam.javalab22.entity.bankAccount;
 public class Debit extends BankAccount {
 
     private BankAccountType bankAccountType = BankAccountType.DEBIT;
-    public Debit() {
-    }
 
     public Debit(int bankAccountID,
                  long customerID,

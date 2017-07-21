@@ -8,9 +8,6 @@ public abstract class BankAccount {
     private double amount;
     private BankAccountStatus status;
 
-    public BankAccount() {
-    }
-
     public BankAccount(int bankAccountID,
                        long customerID,
                        double amount,
