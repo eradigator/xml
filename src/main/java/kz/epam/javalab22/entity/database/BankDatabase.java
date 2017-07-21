@@ -1,6 +1,7 @@
 package kz.epam.javalab22.entity.database;
 
 import kz.epam.javalab22.entity.bankAccount.BankAccount;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +16,10 @@ public class BankDatabase {
         return database;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+    public void printToScreen() {
+        for (BankAccount ba : database) {
+            System.out.println(ba);
+        }
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
 }

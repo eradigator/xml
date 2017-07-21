@@ -8,9 +8,6 @@ public class Credit extends BankAccount {
     private BankAccountType bankAccountType = BankAccountType.CREDIT;
     private double limit;
 
-    public Credit() {
-    }
-
     public Credit(int bankAccountID, long customerID, double amount, BankAccountStatus status, double limit) {
         super(bankAccountID, customerID, amount, status);
         this.limit = limit;

@@ -6,27 +6,45 @@
 
     <bankAccount>
         <bank:Debit status="PAUSED">
-            <bankAccountID>12341</bankAccountID>
-            <customerID>3153</customerID>
-            <amount>315135135</amount>
+            <bankAccountID>1</bankAccountID>
+            <customerID>1001</customerID>
+            <amount>1000</amount>
         </bank:Debit>
     </bankAccount>
 
     <bankAccount>
         <bank:Credit status="ACTIVE">
-            <bankAccountID>987341</bankAccountID>
-            <customerID>12412421</customerID>
-            <amount>3153153</amount>
-            <limit>13535</limit>
+            <bankAccountID>2</bankAccountID>
+            <customerID>1002</customerID>
+            <amount>2000</amount>
+            <limit>10000</limit>
         </bank:Credit>
     </bankAccount>
 
     <bankAccount>
         <bank:Debit status="CLOSED">
-            <bankAccountID>88812424</bankAccountID>
-            <customerID>12424124</customerID>
-            <amount>353535</amount>
+            <bankAccountID>3</bankAccountID>
+            <customerID>1003</customerID>
+            <amount>3000</amount>
         </bank:Debit>
     </bankAccount>
+
+    <bankAccount>
+        <bank:Debit status="PAUSED">
+            <bankAccountID>4</bankAccountID>
+            <customerID>1004</customerID>
+            <amount>4000</amount>
+        </bank:Debit>
+    </bankAccount>
+
+    <bankAccount>
+        <bank:Credit status="ACTIVE">
+            <bankAccountID>5</bankAccountID>
+            <customerID>1005</customerID>
+            <amount>5000</amount>
+            <limit>11000</limit>
+        </bank:Credit>
+    </bankAccount>
+
 
 </bank:bankDatabase>
