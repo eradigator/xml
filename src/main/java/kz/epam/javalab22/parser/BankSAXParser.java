@@ -22,8 +22,8 @@ public class BankSAXParser extends DefaultHandler {
     private static final String ACTIVE = "ACTIVE";
     private static final String PAUSED = "PAUSED";
     private static final String CLOSED = "CLOSED";
-    private static final String CREDIT = "bank:Credit";
-    private static final String DEBIT = "bank:Debit";
+    private static final String CREDIT = "credit";
+    private static final String DEBIT = "debit";
     private static final String BANK_ACCOUNT_ID = "bankAccountID";
     private static final String CUSTOMER_ID = "customerID";
     private static final String AMOUNT = "amount";

@@ -2,18 +2,19 @@
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="http://kz.epam.javalab22/bank"
-           xmlns="http://kz.epam.javalab22/bank">
+           xmlns="http://kz.epam.javalab22/bank"
+           elementFormDefault="qualified">
 
     <xs:element name="bankDatabase">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="bankAccount" type="BankAccountType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="bankAccount" type="bankAccountType" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
 
-    <xs:complexType name="BankAccount">
+    <xs:complexType name="bankAccount">
 
         <xs:sequence>
             <xs:element type="xs:int" name="bankAccountID" />
@@ -34,31 +35,31 @@
     </xs:complexType>
 
 
-    <xs:complexType name="BankAccountType">
+    <xs:complexType name="bankAccountType">
         <xs:choice>
-            <xs:element ref="Credit"/>
-            <xs:element ref="Debit"/>
+            <xs:element ref="credit"/>
+            <xs:element ref="debit"/>
         </xs:choice>
     </xs:complexType>
 
 
-    <xs:element name="Credit">
+    <xs:element name="credit">
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="BankAccount">
-                    <xs:all>
+                <xs:extension base="bankAccount">
+                    <xs:sequence>
                         <xs:element name="limit" type="xs:string"/>
-                    </xs:all>
+                    </xs:sequence>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
 
 
-    <xs:element name="Debit">
+    <xs:element name="debit">
         <xs:complexType>
             <xs:complexContent>
-                <xs:extension base="BankAccount">
+                <xs:extension base="bankAccount">
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
