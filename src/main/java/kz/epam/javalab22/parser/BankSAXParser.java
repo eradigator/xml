@@ -48,11 +48,7 @@ public class BankSAXParser extends DefaultHandler {
             spf.setValidating(false);
             SAXParser sp = spf.newSAXParser();
             sp.parse(new File(pathToFile), this);
-        } catch (SAXException ex) {
-            ex.printStackTrace();
-        } catch (ParserConfigurationException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
+        } catch (SAXException | ParserConfigurationException | IOException ex) {
             ex.printStackTrace();
         }
 
