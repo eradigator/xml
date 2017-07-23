@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<bank:bankDatabase xmlns:bank="http://kz.epam.javalab22/bank"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://kz.epam.javalab22/bank">
+<bankDatabase xmlns="http://kz.epam.javalab22/bank"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://kz.epam.javalab22/bank bank.xsd">
 
     <bankAccount>
-        <bank:Debit status="PAUSED">
+        <debit status="PAUSED">
             <bankAccountID>1</bankAccountID>
             <customerID>1001</customerID>
             <amount>1000</amount>
-        </bank:Debit>
+        </debit>
     </bankAccount>
 
     <bankAccount>
-        <bank:Credit status="ACTIVE">
+        <credit status="ACTIVE">
             <bankAccountID>2</bankAccountID>
             <customerID>1002</customerID>
             <amount>2000</amount>
             <limit>10000</limit>
-        </bank:Credit>
+        </credit>
     </bankAccount>
 
     <bankAccount>
-        <bank:Debit status="CLOSED">
+        <debit status="CLOSED">
             <bankAccountID>3</bankAccountID>
             <customerID>1003</customerID>
             <amount>3000</amount>
-        </bank:Debit>
+        </debit>
     </bankAccount>
 
     <bankAccount>
-        <bank:Debit status="PAUSED">
+        <debit status="PAUSED">
             <bankAccountID>4</bankAccountID>
             <customerID>1004</customerID>
             <amount>4000</amount>
-        </bank:Debit>
+        </debit>
     </bankAccount>
 
     <bankAccount>
-        <bank:Credit status="ACTIVE">
+        <credit status="ACTIVE">
             <bankAccountID>5</bankAccountID>
             <customerID>1005</customerID>
             <amount>5000</amount>
             <limit>11000</limit>
-        </bank:Credit>
+        </credit>
     </bankAccount>
 
-
-</bank:bankDatabase>
+</bankDatabase>
