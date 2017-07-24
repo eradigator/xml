@@ -2,6 +2,7 @@ package kz.epam.javalab22.runner;
 
 import kz.epam.javalab22.entity.database.BankDatabase;
 import kz.epam.javalab22.parser.BankSAXParser;
+import kz.epam.javalab22.parser.BankStAXParser;
 import kz.epam.javalab22.validator.ValidatorXML;
 
 /**
@@ -20,6 +21,9 @@ public class Runner {
 
         BankDatabase database1 = new BankSAXParser().parseXMLtoObjects(PATH_TO_XML_FILE);
         database1.printToScreen();
+
+        BankDatabase database2 = new BankStAXParser().parseXMLtoObjects(PATH_TO_XML_FILE);
+        database2.printToScreen();
 
     }
 }

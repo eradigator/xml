@@ -2,12 +2,10 @@ package kz.epam.javalab22.parser;
 
 import kz.epam.javalab22.entity.bankAccount.BankAccountStatus;
 import kz.epam.javalab22.entity.bankAccount.Credit;
+import kz.epam.javalab22.entity.bankAccount.Debit;
 import kz.epam.javalab22.entity.database.BankDatabase;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.*;
 import javax.xml.stream.events.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -17,7 +15,6 @@ public class BankStAXParser {
 
     private static BankDatabase bankDatabase = new BankDatabase();
 
-    private static final String STATUS = "status";
     private static final String ACTIVE = "ACTIVE";
     private static final String PAUSED = "PAUSED";
     private static final String CLOSED = "CLOSED";
@@ -28,23 +25,23 @@ public class BankStAXParser {
     private static final String AMOUNT = "amount";
     private static final String LIMIT = "limit";
 
-    private static boolean isBankAccountID = false;
-    private static boolean isCustomerID = false;
-    private static boolean isAmount = false;
-    private static boolean isLimit = false;
+    private boolean isBankAccountID = false;
+    private boolean isCustomerID = false;
+    private boolean isAmount = false;
+    private boolean isLimit = false;
 
-    private static int bankAccountID;
-    private static long customerID;
-    private static double amount;
-    private static double limit;
-    private static BankAccountStatus status;
+    private int bankAccountID;
+    private long customerID;
+    private double amount;
+    private double limit;
+    private BankAccountStatus status;
 
-    public static void main(String[] args) {
 
+    public BankDatabase parseXMLtoObjects(String pathToXMLFile) {
 
         try {
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            XMLEventReader eventReader = factory.createXMLEventReader(new FileReader("src/main/xml/bankAccount.xml"));
+            XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(pathToXMLFile));
 
             while (eventReader.hasNext()) {
                 XMLEvent event = eventReader.nextEvent();
@@ -54,11 +51,9 @@ public class BankStAXParser {
                         String qName = startElement.getName().getLocalPart();
 
                         if (qName.equalsIgnoreCase(DEBIT) || qName.equalsIgnoreCase(CREDIT)) {
-                            System.out.println("Start Element : bankAccount");
 
                             Iterator<Attribute> attributes = startElement.getAttributes();
                             String attributeValue = attributes.next().getValue();
-
                             if (attributeValue.equalsIgnoreCase(ACTIVE)) {
                                 status = BankAccountStatus.ACTIVE;
                             } else if (attributeValue.equalsIgnoreCase(PAUSED)) {
@@ -66,8 +61,6 @@ public class BankStAXParser {
                             } else if (attributeValue.equalsIgnoreCase(CLOSED)) {
                                 status = BankAccountStatus.CLOSED;
                             }
-
-                            System.out.println("Status : " + status);
 
                         } else if (qName.equalsIgnoreCase(BANK_ACCOUNT_ID)) {
                             isBankAccountID = true;
@@ -83,30 +76,33 @@ public class BankStAXParser {
                     case XMLStreamConstants.CHARACTERS:
                         Characters characters = event.asCharacters();
                         if (isBankAccountID) {
-                            System.out.println("BankAccount ID: " + characters.getData());
                             bankAccountID = Integer.parseInt(characters.getData());
                             isBankAccountID = false;
                         }
                         if (isCustomerID) {
-                            System.out.println("CustomerID: " + characters.getData());
+                            customerID = Long.parseLong(characters.getData());
                             isCustomerID = false;
                         }
                         if (isAmount) {
-                            System.out.println("Amount: " + characters.getData());
+                            amount = Double.parseDouble(characters.getData());
                             isAmount = false;
                         }
                         if (isLimit) {
-                            System.out.println("Limit: " + characters.getData());
+                            limit = Double.parseDouble(characters.getData());
                             isLimit = false;
                         }
                         break;
+
                     case XMLStreamConstants.END_ELEMENT:
                         EndElement endElement = event.asEndElement();
                         if (endElement.getName().getLocalPart().equalsIgnoreCase(CREDIT)) {
-                            System.out.println("End Element : bankAccount");
                             bankDatabase.getDatabase().add(new Credit(bankAccountID, customerID, amount, status, limit));
-                            System.out.println();
                         }
+
+                        if (endElement.getName().getLocalPart().equalsIgnoreCase(DEBIT)) {
+                            bankDatabase.getDatabase().add(new Debit(bankAccountID, customerID, amount, status));
+                        }
+
                         break;
                 }
             }
@@ -114,6 +110,7 @@ public class BankStAXParser {
             e.printStackTrace();
         }
 
-        bankDatabase.printToScreen();
+        return bankDatabase;
+
     }
 }
