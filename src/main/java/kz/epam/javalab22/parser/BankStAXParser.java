@@ -54,12 +54,16 @@ public class BankStAXParser {
 
                             Iterator<Attribute> attributes = startElement.getAttributes();
                             String attributeValue = attributes.next().getValue();
-                            if (attributeValue.equalsIgnoreCase(ACTIVE)) {
-                                status = BankAccountStatus.ACTIVE;
-                            } else if (attributeValue.equalsIgnoreCase(PAUSED)) {
-                                status = BankAccountStatus.PAUSED;
-                            } else if (attributeValue.equalsIgnoreCase(CLOSED)) {
-                                status = BankAccountStatus.CLOSED;
+                            switch (attributeValue.toUpperCase()) {
+                                case ACTIVE:
+                                    status = BankAccountStatus.ACTIVE;
+                                    break;
+                                case PAUSED:
+                                    status = BankAccountStatus.PAUSED;
+                                    break;
+                                case CLOSED:
+                                    status = BankAccountStatus.CLOSED;
+                                    break;
                             }
 
                         } else if (qName.equalsIgnoreCase(BANK_ACCOUNT_ID)) {
@@ -95,12 +99,14 @@ public class BankStAXParser {
 
                     case XMLStreamConstants.END_ELEMENT:
                         EndElement endElement = event.asEndElement();
-                        if (endElement.getName().getLocalPart().equalsIgnoreCase(CREDIT)) {
-                            bankDatabase.getDatabase().add(new Credit(bankAccountID, customerID, amount, status, limit));
-                        }
 
-                        if (endElement.getName().getLocalPart().equalsIgnoreCase(DEBIT)) {
-                            bankDatabase.getDatabase().add(new Debit(bankAccountID, customerID, amount, status));
+                        switch (endElement.getName().getLocalPart()) {
+                            case CREDIT:
+                                bankDatabase.getDatabase().add(new Credit(bankAccountID, customerID, amount, status, limit));
+                                break;
+                            case DEBIT:
+                                bankDatabase.getDatabase().add(new Debit(bankAccountID, customerID, amount, status));
+                                break;
                         }
 
                         break;
