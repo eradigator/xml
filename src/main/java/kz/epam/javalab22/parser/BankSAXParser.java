@@ -41,13 +41,13 @@ public class BankSAXParser extends DefaultHandler {
     private BankAccountStatus status;
 
 
-    public BankDatabase parseXMLtoObjects(String pathToFile) {
+    public BankDatabase parseXMLtoObjects(String pathToXMLFile) {
 
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
             spf.setValidating(false);
             SAXParser sp = spf.newSAXParser();
-            sp.parse(new File(pathToFile), this);
+            sp.parse(new File(pathToXMLFile), this);
         } catch (SAXException | ParserConfigurationException | IOException ex) {
             ex.printStackTrace();
         }

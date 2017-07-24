@@ -30,7 +30,7 @@
     </bankAccount>
 
     <bankAccount>
-        <debit status="PAUSED">
+        <debit status="ACTIVE">
             <bankAccountID>4</bankAccountID>
             <customerID>1004</customerID>
             <amount>4000</amount>

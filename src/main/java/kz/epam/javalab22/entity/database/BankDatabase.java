@@ -16,10 +16,16 @@ public class BankDatabase {
         return database;
     }
 
+    @Override
+    public String toString() {
+        return database.toString();
+    }
+
     public void printToScreen() {
         for (BankAccount ba : database) {
             System.out.println(ba);
         }
+        System.out.println();
     }
 
 }
