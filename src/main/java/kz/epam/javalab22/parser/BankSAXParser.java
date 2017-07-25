@@ -58,16 +58,19 @@ public class BankSAXParser extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
-        int length = attributes.getLength();
-        for (int i = 0; i < length; i++) {
-            if (attributes.getQName(i).equalsIgnoreCase(STATUS)) {
+        for (int i = 0; i < attributes.getLength(); i++) {
+            if (STATUS.equalsIgnoreCase(attributes.getQName(i))) {
                 {
-                    if (attributes.getValue(i).equalsIgnoreCase(ACTIVE)) {
-                        status = BankAccountStatus.ACTIVE;
-                    } else if (attributes.getValue(i).equalsIgnoreCase(PAUSED)) {
-                        status = BankAccountStatus.PAUSED;
-                    } else if (attributes.getValue(i).equalsIgnoreCase(CLOSED)) {
-                        status = BankAccountStatus.CLOSED;
+                    switch (attributes.getValue(i).toUpperCase()) {
+                        case ACTIVE:
+                            status = BankAccountStatus.ACTIVE;
+                            break;
+                        case PAUSED:
+                            status = BankAccountStatus.PAUSED;
+                            break;
+                        case CLOSED:
+                            status = BankAccountStatus.CLOSED;
+                            break;
                     }
                 }
             }
@@ -117,13 +120,15 @@ public class BankSAXParser extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
-        if (qName.equalsIgnoreCase(CREDIT)) {
-            bankDatabase.getDatabase().add(new Credit(bankAccountID, customerID, amount, status, limit));
+        switch (qName) {
+            case CREDIT:
+                bankDatabase.getDatabase().add(new Credit(bankAccountID, customerID, amount, status, limit));
+                break;
+            case DEBIT:
+                bankDatabase.getDatabase().add(new Debit(bankAccountID, customerID, amount, status));
+                break;
         }
 
-        if (qName.equalsIgnoreCase(DEBIT)) {
-            bankDatabase.getDatabase().add(new Debit(bankAccountID, customerID, amount, status));
-        }
     }
 
 }
