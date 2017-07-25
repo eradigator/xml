@@ -1,5 +1,9 @@
 package kz.epam.javalab22.parser;
 
+import kz.epam.javalab22.entity.bankAccount.BankAccountStatus;
+import kz.epam.javalab22.entity.bankAccount.Credit;
+import kz.epam.javalab22.entity.bankAccount.Debit;
+import kz.epam.javalab22.entity.database.BankDatabase;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -11,48 +15,81 @@ import java.io.File;
 
 public class BankDOMParser {
 
-    public static void main(String[] args) {
-        new BankDOMParser().parseXMLtoObjects();
-    }
+    private BankDatabase bankDatabase = new BankDatabase();
 
-    public void parseXMLtoObjects() {
+    private static final String STATUS = "status";
+    private static final String ACTIVE = "ACTIVE";
+    private static final String PAUSED = "PAUSED";
+    private static final String CLOSED = "CLOSED";
+    private static final String CREDIT = "credit";
+    private static final String DEBIT = "debit";
+    private static final String BANK_ACCOUNT = "bankAccount";
+    private static final String BANK_ACCOUNT_ID = "bankAccountID";
+    private static final String CUSTOMER_ID = "customerID";
+    private static final String AMOUNT = "amount";
+    private static final String LIMIT = "limit";
+
+
+    public BankDatabase parseXMLtoObjects(String pathToXMLFile) {
+
+        int bankAccountID;
+        long customerID;
+        double amount;
+        double limit;
+        BankAccountStatus status = null;
 
         try {
-            File fXmlFile = new File("src/main/xml/bankAccount.xml");
+            File fXmlFile = new File(pathToXMLFile);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fXmlFile);
-
-            //optional, but recommended
-            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
             doc.getDocumentElement().normalize();
 
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            NodeList nList = doc.getElementsByTagName(BANK_ACCOUNT);
 
-            NodeList nList = doc.getElementsByTagName("credit");
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                NodeList childNodes = nNode.getChildNodes();
 
-            System.out.println("----------------------------");
+                for (int j = 0; j < childNodes.getLength(); j++) {
+                    Node childNode = childNodes.item(j);
 
-            for (int temp = 0; temp < nList.getLength(); temp++) {
+                    if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) childNode;
 
-                Node nNode = nList.item(temp);
+                        switch (eElement.getAttribute(STATUS)) {
+                            case ACTIVE:
+                                status = BankAccountStatus.ACTIVE;
+                                break;
+                            case PAUSED:
+                                status = BankAccountStatus.PAUSED;
+                                break;
+                            case CLOSED:
+                                status = BankAccountStatus.CLOSED;
+                                break;
+                        }
 
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                        bankAccountID = Integer.parseInt(eElement.getElementsByTagName(BANK_ACCOUNT_ID).item(0).getTextContent());
+                        customerID = Long.parseLong(eElement.getElementsByTagName(CUSTOMER_ID).item(0).getTextContent());
+                        amount = Double.parseDouble(eElement.getElementsByTagName(AMOUNT).item(0).getTextContent());
 
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                        switch (childNode.getNodeName()) {
+                            case CREDIT:
+                                limit = Double.parseDouble(eElement.getElementsByTagName(LIMIT).item(0).getTextContent());
+                                bankDatabase.getDatabase().add(new Credit(bankAccountID, customerID, amount, status, limit));
+                                break;
+                            case DEBIT:
+                                bankDatabase.getDatabase().add(new Debit(bankAccountID, customerID, amount, status));
+                                break;
+                        }
 
-                    Element eElement = (Element) nNode;
-
-                    System.out.println("status : " + eElement.getAttribute("status"));
-                    System.out.println("bankAccountID : " + eElement.getElementsByTagName("bankAccountID").item(0).getTextContent());
-                    System.out.println("customerID : " + eElement.getElementsByTagName("customerID").item(0).getTextContent());
-                    System.out.println("amount : " + eElement.getElementsByTagName("amount").item(0).getTextContent());
-                    //System.out.println("Salary : " + eElement.getElementsByTagName("limit").item(0).getTextContent());
-
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return bankDatabase;
     }
 }

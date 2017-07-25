@@ -5,7 +5,10 @@ import kz.epam.javalab22.entity.bankAccount.Credit;
 import kz.epam.javalab22.entity.bankAccount.Debit;
 import kz.epam.javalab22.entity.database.BankDatabase;
 
-import javax.xml.stream.*;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,11 +27,7 @@ public class BankStAXParser {
     private static final String CUSTOMER_ID = "customerID";
     private static final String AMOUNT = "amount";
     private static final String LIMIT = "limit";
-
-    private boolean isBankAccountID = false;
-    private boolean isCustomerID = false;
-    private boolean isAmount = false;
-    private boolean isLimit = false;
+    private static final String BLANK_STRING = "";
 
     private int bankAccountID;
     private long customerID;
@@ -36,6 +35,7 @@ public class BankStAXParser {
     private double limit;
     private BankAccountStatus status;
 
+    private String elementName;
 
     public BankDatabase parseXMLtoObjects(String pathToXMLFile) {
 
@@ -49,9 +49,9 @@ public class BankStAXParser {
                     case XMLStreamConstants.START_ELEMENT:
                         StartElement startElement = event.asStartElement();
                         String qName = startElement.getName().getLocalPart();
+                        elementName = qName;
 
-                        if (qName.equalsIgnoreCase(DEBIT) || qName.equalsIgnoreCase(CREDIT)) {
-
+                        if (DEBIT.equals(qName) || CREDIT.equals(qName)) {
                             Iterator<Attribute> attributes = startElement.getAttributes();
                             String attributeValue = attributes.next().getValue();
                             switch (attributeValue.toUpperCase()) {
@@ -65,36 +65,30 @@ public class BankStAXParser {
                                     status = BankAccountStatus.CLOSED;
                                     break;
                             }
-
-                        } else if (qName.equalsIgnoreCase(BANK_ACCOUNT_ID)) {
-                            isBankAccountID = true;
-                        } else if (qName.equalsIgnoreCase(CUSTOMER_ID)) {
-                            isCustomerID = true;
-                        } else if (qName.equalsIgnoreCase(AMOUNT)) {
-                            isAmount = true;
-                        } else if (qName.equalsIgnoreCase(LIMIT)) {
-                            isLimit = true;
                         }
+
                         break;
 
                     case XMLStreamConstants.CHARACTERS:
                         Characters characters = event.asCharacters();
-                        if (isBankAccountID) {
-                            bankAccountID = Integer.parseInt(characters.getData());
-                            isBankAccountID = false;
+
+                        if (!BLANK_STRING.equals(characters.getData().trim())) {
+                            switch (elementName) {
+                                case BANK_ACCOUNT_ID:
+                                    bankAccountID = Integer.parseInt(characters.getData());
+                                    break;
+                                case CUSTOMER_ID:
+                                    customerID = Long.parseLong(characters.getData());
+                                    break;
+                                case AMOUNT:
+                                    amount = Double.parseDouble(characters.getData());
+                                    break;
+                                case LIMIT:
+                                    limit = Double.parseDouble(characters.getData());
+                                    break;
+                            }
                         }
-                        if (isCustomerID) {
-                            customerID = Long.parseLong(characters.getData());
-                            isCustomerID = false;
-                        }
-                        if (isAmount) {
-                            amount = Double.parseDouble(characters.getData());
-                            isAmount = false;
-                        }
-                        if (isLimit) {
-                            limit = Double.parseDouble(characters.getData());
-                            isLimit = false;
-                        }
+
                         break;
 
                     case XMLStreamConstants.END_ELEMENT:
@@ -117,6 +111,5 @@ public class BankStAXParser {
         }
 
         return bankDatabase;
-
     }
 }
