@@ -40,4 +40,28 @@ public abstract class BankAccount {
 
     public abstract String getType();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BankAccount)) return false;
+
+        BankAccount that = (BankAccount) o;
+
+        if (getBankAccountID() != that.getBankAccountID()) return false;
+        if (getCustomerID() != that.getCustomerID()) return false;
+        if (Double.compare(that.getAmount(), getAmount()) != 0) return false;
+        return getStatus() == that.getStatus();
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = getBankAccountID();
+        result = 31 * result + (int) (getCustomerID() ^ (getCustomerID() >>> 32));
+        temp = Double.doubleToLongBits(getAmount());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+        return result;
+    }
 }

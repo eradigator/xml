@@ -28,17 +28,15 @@ public class BankSAXParser extends DefaultHandler {
     private static final String CUSTOMER_ID = "customerID";
     private static final String AMOUNT = "amount";
     private static final String LIMIT = "limit";
-
-    private boolean isBankAccountID = false;
-    private boolean isCustomerID = false;
-    private boolean isAmount = false;
-    private boolean isLimit = false;
+    private static final String BLANK_STRING = "";
 
     private int bankAccountID;
     private long customerID;
     private double amount;
     private double limit;
     private BankAccountStatus status;
+
+    private String elementName;
 
 
     public BankDatabase parseXMLtoObjects(String pathToXMLFile) {
@@ -58,6 +56,8 @@ public class BankSAXParser extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
+        elementName = qName;
+
         for (int i = 0; i < attributes.getLength(); i++) {
             if (STATUS.equalsIgnoreCase(attributes.getQName(i))) {
                 {
@@ -76,45 +76,28 @@ public class BankSAXParser extends DefaultHandler {
             }
         }
 
-        if (qName.equalsIgnoreCase(BANK_ACCOUNT_ID)) {
-            isBankAccountID = true;
-        }
-
-        if (qName.equalsIgnoreCase(CUSTOMER_ID)) {
-            isCustomerID = true;
-        }
-
-        if (qName.equalsIgnoreCase(AMOUNT)) {
-            isAmount = true;
-        }
-
-        if (qName.equalsIgnoreCase(LIMIT)) {
-            isLimit = true;
-        }
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
 
-        if (isBankAccountID) {
-            bankAccountID = Integer.parseInt(new String(ch, start, length));
-            isBankAccountID = false;
+        if (!BLANK_STRING.equals(String.valueOf(ch, start, length).trim())) {
+            switch (elementName) {
+                case BANK_ACCOUNT_ID:
+                    bankAccountID = Integer.parseInt(new String(ch, start, length));
+                    break;
+                case CUSTOMER_ID:
+                    customerID = Long.parseLong(new String(ch, start, length));
+                    break;
+                case AMOUNT:
+                    amount = Double.parseDouble(new String(ch, start, length));
+                    break;
+                case LIMIT:
+                    limit = Double.parseDouble(new String(ch, start, length));
+                    break;
+            }
         }
 
-        if (isCustomerID) {
-            customerID = Long.parseLong(new String(ch, start, length));
-            isCustomerID = false;
-        }
-
-        if (isAmount) {
-            amount = Double.parseDouble(new String(ch, start, length));
-            isAmount = false;
-        }
-
-        if (isLimit) {
-            limit = Double.parseDouble(new String(ch, start, length));
-            isLimit = false;
-        }
     }
 
     @Override

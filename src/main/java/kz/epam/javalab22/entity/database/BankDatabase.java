@@ -10,7 +10,8 @@ import java.util.List;
  */
 
 public class BankDatabase {
-    private List<BankAccount> database = new ArrayList<BankAccount>();
+
+    private List<BankAccount> database = new ArrayList<>();
 
     public List<BankAccount> getDatabase() {
         return database;
@@ -28,4 +29,18 @@ public class BankDatabase {
         System.out.println();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BankDatabase)) return false;
+
+        BankDatabase database1 = (BankDatabase) o;
+
+        return getDatabase().equals(database1.getDatabase());
+    }
+
+    @Override
+    public int hashCode() {
+        return getDatabase().hashCode();
+    }
 }
