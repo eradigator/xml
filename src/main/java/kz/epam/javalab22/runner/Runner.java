@@ -42,10 +42,7 @@ public class Runner {
 
         System.out.println(EQUALS + (database1.equals(database2) && database2.equals(database3)));
 
-        System.out.println(HASHCODES + database1.hashCode() + DIVIDER +
-                database2.hashCode() + DIVIDER +
-                database3.hashCode() + DIVIDER +
-                EQUALS + (database1.hashCode() == database2.hashCode() && database2.hashCode() == database3.hashCode()));
+        System.out.println(HASHCODES + database1.hashCode() + DIVIDER + database2.hashCode() + DIVIDER + database3.hashCode());
 
     }
 }
